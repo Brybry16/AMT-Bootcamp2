@@ -1,5 +1,7 @@
 package web;
 
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -7,11 +9,11 @@ import java.io.IOException;
  */
 @javax.servlet.annotation.WebServlet(name = "HelloServlet")
 public class HelloServlet extends javax.servlet.http.HttpServlet {
-    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 }
