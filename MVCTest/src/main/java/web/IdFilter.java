@@ -24,27 +24,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import javax.websocket.Session;
 
 /**
  *
  * @author tonidias
  */
-public class MagicFilter implements Filter {
+public class IdFilter implements Filter {
     
-    private static final boolean debug = false;
+    private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public MagicFilter() {
+    public IdFilter() {
     }    
     
     private void doBeforeProcessing(RequestWrapper request, ResponseWrapper response)
             throws IOException, ServletException {
         if (debug) {
-            log("MagicFilter:DoBeforeProcessing");
+            log("IdFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -81,7 +82,7 @@ public class MagicFilter implements Filter {
     private void doAfterProcessing(RequestWrapper request, ResponseWrapper response)
             throws IOException, ServletException {
         if (debug) {
-            log("MagicFilter:DoAfterProcessing");
+            log("IdFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -135,7 +136,19 @@ public class MagicFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("MagicFilter:doFilter()");
+            log("IdFilter:doFilter()");
+        }
+        HttpServletRequest req = (HttpServletRequest) request;
+        Object id = req.getSession().getAttribute("ID");
+        if(id == null){
+            log("IdFilter:doFilter():NULL");
+            //response.sendRedirect("/WEB-INF/pages/Login.jsp");
+            request.getRequestDispatcher("/WEB-INF/pages/Login.jsp").forward(request, response);
+            //request.getRequestDispatcher("LoginServelet.java").forward(request, response);
+        }
+        else{
+            log("IdFilter:doFilter():LOGIN");
+            request.getRequestDispatcher("/WEB-INF/pages/Home.jsp").forward(request, response);
         }
 
         // Create wrappers for the request and response objects.
@@ -207,7 +220,7 @@ public class MagicFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("MagicFilter: Initializing filter");
+                log("IdFilter: Initializing filter");
             }
         }
     }
@@ -218,9 +231,9 @@ public class MagicFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("MagicFilter()");
+            return ("IdFilter()");
         }
-        StringBuffer sb = new StringBuffer("MagicFilter(");
+        StringBuffer sb = new StringBuffer("IdFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -295,7 +308,7 @@ public class MagicFilter implements Filter {
         
         public void setParameter(String name, String[] values) {
             if (debug) {
-                System.out.println("MagicFilter::setParameter(" + name + "=" + values + ")" + " localParams = " + localParams);
+                System.out.println("IdFilter::setParameter(" + name + "=" + values + ")" + " localParams = " + localParams);
             }
             
             if (localParams == null) {
@@ -315,7 +328,7 @@ public class MagicFilter implements Filter {
         @Override
         public String getParameter(String name) {
             if (debug) {
-                System.out.println("MagicFilter::getParameter(" + name + ") localParams = " + localParams);
+                System.out.println("IdFilter::getParameter(" + name + ") localParams = " + localParams);
             }
             if (localParams == null) {
                 return getRequest().getParameter(name);
@@ -334,7 +347,7 @@ public class MagicFilter implements Filter {
         @Override
         public String[] getParameterValues(String name) {
             if (debug) {
-                System.out.println("MagicFilter::getParameterValues(" + name + ") localParams = " + localParams);
+                System.out.println("IdFilter::getParameterValues(" + name + ") localParams = " + localParams);
             }
             if (localParams == null) {
                 return getRequest().getParameterValues(name);
@@ -345,7 +358,7 @@ public class MagicFilter implements Filter {
         @Override
         public Enumeration getParameterNames() {
             if (debug) {
-                System.out.println("MagicFilter::getParameterNames() localParams = " + localParams);
+                System.out.println("IdFilter::getParameterNames() localParams = " + localParams);
             }
             if (localParams == null) {
                 return getRequest().getParameterNames();
@@ -356,7 +369,7 @@ public class MagicFilter implements Filter {
         @Override
         public Map getParameterMap() {
             if (debug) {
-                System.out.println("MagicFilter::getParameterMap() localParams = " + localParams);
+                System.out.println("IdFilter::getParameterMap() localParams = " + localParams);
             }
             if (localParams == null) {
                 return getRequest().getParameterMap();
